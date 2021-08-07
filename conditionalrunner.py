@@ -3,6 +3,10 @@ from globalstorage import GlobalStorage
 
 from SimConnect import Event
 
+from SimConnectMobiflight.simconnect_mobiflight import SimConnectMobiFlight
+from SimConnectMobiflight.mobiflight_variable_requests import MobiFlightVariableRequests
+
+
 env = Environment(
     autoescape=select_autoescape(['html', 'xml'])
 )
@@ -18,8 +22,15 @@ class ConditionalRunner:
         self._ae = GlobalStorage().aircraft_events
         self._aq = GlobalStorage().aircraft_requests
 
+
     def get_simvar_value(self, name: str):
         value = self._aq.get(name)
+        return value
+
+    def get_mobiflight_value(self, name: str):
+        #Add MobiFlight
+        value = GlobalStorage().get_mobiflight_variable(name)
+        print(name,value)
         return value
 
     def set_simvar_value(self, name: str, value):
@@ -43,7 +54,7 @@ class ConditionalRunner:
 
     @staticmethod
     def print(data):
-        print(data)
+        print(data, flush=True)
 
     @staticmethod
     def set_button_led(index: int, on: bool, blink=False):
